@@ -1,0 +1,6 @@
+path: /content/drive/MyDrive/YOLOv11-RGBT/water_bottle_yolo
+train: visible/train
+val: visible/test
+
+nc: 1
+names: ['water_bottle']

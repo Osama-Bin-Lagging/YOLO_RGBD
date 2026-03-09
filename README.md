@@ -1,14 +1,65 @@
-# YOLOv11-RGBD Water Bottle Detection — Kaggle Setup
+# YOLOv11-RGBD — Multi-Architecture RGBD Fusion Framework
 
-## Dataset
+A modified Ultralytics codebase supporting **RGBD (RGB + Depth)** object detection across 16 detector architectures with 6 fusion strategies and 7+ benchmark datasets.
 
-Water bottle data from the [RGB-D Object Dataset](https://rgbd-dataset.cs.washington.edu/) (UW, ICRA 2011). 9 instances (water_bottle_1–7, 9, 10), 5,691 RGBD samples total. Pre-converted to YOLO format in `water_bottle_yolo/` with an 80/20 train/test split (4,552 / 1,139).
+## Supported Architectures
 
-## Setup
+| Architecture | Fusion Strategies | Notes |
+|---|---|---|
+| **YOLOv11** | early, mid, mid-P3, late, score, mid-to-late, share | Most variants: CAS, CTF, PGI, DeepDBB, TransformerFusion, pose/seg/obb tasks |
+| **YOLOv12** | early, mid, mid-P3, mid-CTF, late, score, mid-to-late, share | |
+| **YOLOv13** | early, mid, mid-P3, late, score, share | Size variants: n/l/x |
+| **YOLOv8** | early, mid, mid-P3, mid-CTF, late, score, mid-to-late, share | Includes RGBRGB6C and pose/seg variants |
+| **YOLOv9** | early, mid, mid-P3, mid-CTF, late, score, mid-to-late, share | Sizes: t/s/m |
+| **YOLOv10** | early, mid, mid-P3, mid-CTF, late, score, mid-to-late, share | Sizes: n/s/m/b/l/x |
+| **YOLOv7** | early, mid, mid-P3, mid-CTF, late, score, mid-to-late, share | Also tiny variants |
+| **YOLOv6** | early, mid, mid-P3, mid-CTF, late, score, mid-to-late, share | |
+| **YOLOv5** | early, mid, mid-P3, mid-CTF, late, score, mid-to-late, share | |
+| **YOLOv4** | early, mid, mid-P3, mid-CTF, late, score, mid-to-late, share | Also tiny variants |
+| **YOLOv3** | early, mid, mid-P3, mid-CFT, late, score, share | Also tiny variants |
+| **YOLOX** | early, mid, late, score, mid-to-late, share | |
+| **Hyper-YOLO** | early, mid, mid-CTF, mid-B3 | |
+| **PicoDet** | early, mid, mid-CTF, late, score, share | |
+| **PP-YOLOE** | early, mid, mid-P3, mid-CTF | |
+| **RT-DETR** | early, mid, mid-P3 | ResNet50 backbone |
 
-### 1. Upload to Kaggle
+## Fusion Strategies
 
-Upload the entire repo as a Kaggle dataset.
+| Strategy | Description |
+|---|---|
+| **Earlyfusion** | Single backbone, 4-channel (RGBD) input |
+| **Midfusion** | Dual backbone, features concatenated at P3/P4/P5 |
+| **Midfusion-P3** | Dual backbone, features concatenated at P3 only, shared P4+ |
+| **Latefusion** | Separate backbones + necks, fused at detection head |
+| **Scorefusion** | Independent predictions merged at score level |
+| **Mid-to-late fusion** | Features fused progressively from mid to late stages |
+| **Share** | Shared-weight backbone for both modalities |
+
+## Datasets
+
+| Dataset | Classes | Description |
+|---|---|---|
+| **Water Bottle** (1 class) | `water_bottle` | RGB-D Object Dataset (UW), 5,691 samples |
+| **FLIR Aligned** (3 classes) | person, car, bicycle | FLIR thermal/visible aligned |
+| **KAIST** (1 class) | person | Multispectral pedestrian detection |
+| **KAIST8** (1 class) | person | KAIST 8-class subset |
+| **LLVIP** (1 class) | person | Low-Light Visible-Infrared Paired |
+| **M3FD** (6 classes) | People, Car, Bus, Lamp, Motorcycle, Truck | Multi-spectral detection |
+| **VEDAI** (9 classes) | plane, boat, camping_car, car, pick-up, tractor, truck, van, others | Aerial vehicle detection |
+
+Each dataset has modality-specific configs: `-rgbd` (dual-stream), `-vis` (visible only), `-inf` (infrared/depth only).
+
+Model configs are in `ultralytics/cfg/models/<version>-RGBD/` and dataset configs in `ultralytics/cfg/datasets/`.
+
+## Quick Start — Water Bottle Example
+
+### 1. Convert dataset
+
+```bash
+python convert_rgbd_to_yolo.py
+```
+
+Reads from `rgbd-dataset/water_bottle/`, outputs YOLO-format data to `water_bottle_yolo/` with visible/infrared splits and 80/20 train/test.
 
 ### 2. Install dependencies
 
@@ -20,14 +71,10 @@ pip install -r kaggle_requirements.txt
 
 Edit `ultralytics/cfg/datasets/water_bottle-rgbd.yaml`:
 ```yaml
-path: /kaggle/working/water_bottle_yolo   # update to your Kaggle path
+path: /path/to/water_bottle_yolo
 ```
 
-Same for `water_bottle-rgb.yaml` if running the RGB baseline.
-
-## Training
-
-### RGBD with pretrained weights (recommended)
+### 4. Train with COCO pretrained weights (recommended)
 
 ```bash
 # Earlyfusion (single backbone, 4ch input)
@@ -40,40 +87,28 @@ python train_water_bottle_rgbd.py --fusion midfusion --device 0 --epochs 100
 python train_water_bottle_rgbd.py --fusion midfusion-P3 --device 0 --epochs 100
 ```
 
-### RGBD from scratch
+The script handles: template training (1 epoch) → COCO weight transfer → full training.
+Use `--skip-template` if the template `.pt` already exists from a previous run.
+
+### 5. Train from scratch
 
 ```bash
 python train_water_bottle.py
 ```
 
-### RGB baseline
+## Inference & Tools
 
 ```bash
-python train_water_bottle_rgb.py
+python detect-4C.py              # 4-channel RGBD detection (images/video)
+python detect-multispectral.py   # multispectral detection (8-bit or 16-bit, arbitrary channels)
+python export.py                 # export model
+python val.py                    # validation
+python heatmap_RGBD.py           # gradient heatmap visualization
+python transform_COCO_to_RGBD.py # transfer COCO weights to RGBD model architectures
 ```
 
-## Existing runs
+## Kaggle Notes
 
-Previous training results are in `runs/water_bottle/`:
-- `wb-yolo11n-RGBD-earlyfusion` — RGBD earlyfusion from scratch
-- `wb-yolo11n-RGB-baseline` / `baseline2` — RGB baselines
-- `wb-yolo11n-RGB-scratch` — RGB from scratch
-
-Each run contains `weights/best.pt`, `results.csv`, `results.png`, confusion matrices, and validation predictions.
-
-## Inference & tools
-
-```bash
-python detect-4C.py          # 4-channel RGBD detection
-python detect-multispectral.py  # multispectral detection
-python export.py              # export model
-python val.py                 # validation
-python heatmap_RGBD.py        # gradient heatmap visualization
-```
-
-## Notes
-
+- Upload the entire repo as a Kaggle dataset
 - Kaggle provides T4 or P100 GPUs — use `--device 0`
 - AMP is enabled by default on GPU (disabled automatically on MPS)
-- The unified script handles: template training (1 epoch) → COCO weight transfer → full training
-- Use `--skip-template` if the template `.pt` already exists from a previous run

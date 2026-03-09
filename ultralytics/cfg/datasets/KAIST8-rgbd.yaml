@@ -1,5 +1,3 @@
-## YOLOv5 🚀 by Ultralytics https://ultralytics.com, licensed under GNU GPL v3.0
-## PASCAL VOC dataset http://host.robots.ox.ac.uk/pascal/VOC
 # download:
 #[![One Drive Models](https://1drv.ms/f/c/384d71bb2abb0199/Eh78MfQQYMNGi1owiw4yqywBHMVzltmccCuPRfkOriALgg?e=wDKPPx)
 #[![Google Drive Models](https://drive.google.com/drive/folders/14T2OaLAiMxlx8WJVyJ2x5DLI8RNI0R8m?usp=drive_link)
@@ -7,22 +5,21 @@
 #[![Baidu Drive Datasets](https://pan.baidu.com/s/1xOUP6UTQMXwgErMASPLj2A?pwd=9rrf)
 
 # train and val data as 1) directory: path/images/, 2) file: path/images.txt, or 3) list: [path1/images/, path2/images/]
-#train:  G:/wan/data/RGBT/M3FD_Detection/M3FD_train.txt  # 16551 images
-#val:  G:/wan/data/RGBT/M3FD_Detection/M3FD_trainval.txt # 4952 images
+#train:  G:/wan/data/RGBD/KAIST8/KAIST8C/images/rgb/train  # 7601 images
+#val:  G:/wan/data/RGBD/KAIST8/KAIST8C/images/rgb/test # 2257 images
 
 
-path: E:/BaiduNetdiskDownload/RGBTO/M3FD
+path: E:/BaiduNetdiskDownload/RGBDO/KAIST8
 train: visible/train
 val: visible/test
 
 ## or
-#train: E:/BaiduNetdiskDownload/RGBTO/M3FD/visible/train
-#val: E:/BaiduNetdiskDownload/RGBTO/M3FD/visible/test
+#train: E:/BaiduNetdiskDownload/RGBDO/KAIST8/visible/train
+#val: E:/BaiduNetdiskDownload/RGBDO/KAIST8/visible/test
+
 
 # number of classes
-nc: 6
+nc: 1
 
 # class names
-#names: ['People', 'Car', 'Lamp', 'Bus', 'Motorcycle', 'Truck']
-
-names: ['People', 'Car', 'Bus', 'Lamp', 'Motorcycle', 'Truck']
+names: [ 'person', ]

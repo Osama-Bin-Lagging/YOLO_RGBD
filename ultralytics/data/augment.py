@@ -1074,7 +1074,7 @@ class RandomPerspective:
         if len(img.shape) > 2:
             channels = img.shape[2]
             if channels == 4:
-                value = (114, 114, 114, 114)  # RGBT
+                value = (114, 114, 114, 114)  # RGBD
             else:
                 value = (114, 114, 114)  # RGB  RGBRGB6C
         else:

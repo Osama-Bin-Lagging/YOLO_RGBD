@@ -354,7 +354,7 @@ class Index(nn.Module):
         return x[self.index]
 
 
-#------------------------------------------- RGBT 灵感来自于v9 ------------------------------
+#------------------------------------------- RGBD 灵感来自于v9 ------------------------------
 class Silence(nn.Module):
     def __init__(self):
         super(Silence, self).__init__()

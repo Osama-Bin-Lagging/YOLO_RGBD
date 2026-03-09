@@ -110,8 +110,8 @@ def copy_and_modify_layers(source_model_path, target_model_path, output_model_pa
 if __name__ == "__main__":
     copy_and_modify_layers(
         source_model_path='yolo11n.pt',
-        target_model_path=r"./runs/M3FD-yolo11n-RGBT-midfusion-e300-16-/weights/best.pt",
-        output_model_path='yolo11n-RGBT-midfussion.pt',
+        target_model_path=r"./runs/M3FD-yolo11n-RGBD-midfusion-e300-16-/weights/best.pt",
+        output_model_path='yolo11n-RGBD-midfussion.pt',
         copy_ranges=[
             ((0, 8), (2, 10)),
             ((0, 8), (12, 20)),

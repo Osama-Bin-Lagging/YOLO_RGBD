@@ -579,7 +579,7 @@ class ClassificationDataset:
             im = imread(file_path, cv2.IMREAD_UNCHANGED)  # TIF 16bit
             im = im.astype(np.float32)
             im = SimOTMSSS(im)
-        elif use_simotm == 'RGBT':
+        elif use_simotm == 'RGBD':
             im_visible = imread(file_path)  # BGR
             im_infrared = imread(file_path.replace(pairs_rgb, pairs_ir), cv2.IMREAD_GRAYSCALE)  # GRAY
 

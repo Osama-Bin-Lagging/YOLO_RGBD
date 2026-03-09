@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Unified RGBT training script with COCO pretrained weight transfer.
+"""Unified RGBD training script with COCO pretrained weight transfer.
 
 Supports earlyfusion, midfusion, and midfusion-P3 fusion strategies.
 Handles the full pipeline: template → weight transfer → pretrained training.
 
 Usage:
-    python train_water_bottle_rgbt.py --fusion earlyfusion --device 0 --epochs 100
-    python train_water_bottle_rgbt.py --fusion midfusion --device mps --epochs 100
-    python train_water_bottle_rgbt.py --fusion midfusion-P3 --device 0
+    python train_water_bottle_rgbd.py --fusion earlyfusion --device 0 --epochs 100
+    python train_water_bottle_rgbd.py --fusion midfusion --device mps --epochs 100
+    python train_water_bottle_rgbd.py --fusion midfusion-P3 --device 0
 """
 
 import argparse
@@ -17,7 +17,7 @@ import torch
 
 warnings.filterwarnings("ignore")
 from ultralytics import YOLO
-from transform_COCO_to_RGBT import copy_and_modify_layers
+from transform_COCO_to_RGBD import copy_and_modify_layers
 
 # Layer mappings derived from YAML analysis of each fusion architecture.
 # Standard yolo11n has layers 0-23 (backbone 0-10, head 11-23).
@@ -25,8 +25,8 @@ from transform_COCO_to_RGBT import copy_and_modify_layers
 # the backbone for a second modality branch.
 FUSION_CONFIGS = {
     "earlyfusion": {
-        "yaml": "ultralytics/cfg/models/11-RGBT/yolo11-RGBT-earlyfusion.yaml",
-        "use_simotm": "RGBT",
+        "yaml": "ultralytics/cfg/models/11-RGBD/yolo11-RGBD-earlyfusion.yaml",
+        "use_simotm": "RGBD",
         "channels": 4,
         "copy_ranges": [
             ((0, 10), (2, 12)),    # backbone (+2 offset for Silence+SilenceChannel)
@@ -34,8 +34,8 @@ FUSION_CONFIGS = {
         ],
     },
     "midfusion": {
-        "yaml": "ultralytics/cfg/models/11-RGBT/yolo11-RGBT-midfusion.yaml",
-        "use_simotm": "RGBT",
+        "yaml": "ultralytics/cfg/models/11-RGBD/yolo11-RGBD-midfusion.yaml",
+        "use_simotm": "RGBD",
         "channels": 4,
         "copy_ranges": [
             ((0, 8), (2, 10)),     # RGB backbone (layers 0-8 -> 2-10)
@@ -44,8 +44,8 @@ FUSION_CONFIGS = {
         ],
     },
     "midfusion-P3": {
-        "yaml": "ultralytics/cfg/models/11-RGBT/yolo11-RGBT-midfusion-P3.yaml",
-        "use_simotm": "RGBT",
+        "yaml": "ultralytics/cfg/models/11-RGBD/yolo11-RGBD-midfusion-P3.yaml",
+        "use_simotm": "RGBD",
         "channels": 4,
         "copy_ranges": [
             ((0, 4), (2, 6)),      # RGB branch up to P3
@@ -58,14 +58,14 @@ FUSION_CONFIGS = {
 
 
 def main():
-    parser = argparse.ArgumentParser(description="RGBT training with COCO pretrained weights")
+    parser = argparse.ArgumentParser(description="RGBD training with COCO pretrained weights")
     parser.add_argument("--fusion", choices=list(FUSION_CONFIGS.keys()), required=True,
                         help="Fusion strategy to use")
     parser.add_argument("--epochs", type=int, default=100, help="Training epochs")
     parser.add_argument("--batch", type=int, default=8, help="Batch size")
     parser.add_argument("--device", default="0", help="Device: '0' for GPU, 'mps' for Mac")
     parser.add_argument("--pretrained", default="yolo11n.pt", help="COCO pretrained weights")
-    parser.add_argument("--data", default="ultralytics/cfg/datasets/water_bottle-rgbt.yaml",
+    parser.add_argument("--data", default="ultralytics/cfg/datasets/water_bottle-rgbd.yaml",
                         help="Dataset YAML config")
     parser.add_argument("--project", default="runs/water_bottle", help="Project directory")
     parser.add_argument("--skip-template", action="store_true",
@@ -76,7 +76,7 @@ def main():
     use_amp = args.device != "mps"
     template_name = f"template-{args.fusion}"
     template_pt = f"{args.project}/{template_name}/weights/last.pt"
-    pretrained_pt = f"yolo11n-RGBT-{args.fusion}-pretrained.pt"
+    pretrained_pt = f"yolo11n-RGBD-{args.fusion}-pretrained.pt"
 
     # --- Step 1: Train 1-epoch template to get model structure ---
     if not args.skip_template:
@@ -129,9 +129,9 @@ def main():
         cache=False,
         imgsz=640,
         project=args.project,
-        name=f"wb-yolo11n-RGBT-{args.fusion}-pretrained",
+        name=f"wb-yolo11n-RGBD-{args.fusion}-pretrained",
     )
-    print(f"\nDone! Results saved to {args.project}/wb-yolo11n-RGBT-{args.fusion}-pretrained/")
+    print(f"\nDone! Results saved to {args.project}/wb-yolo11n-RGBD-{args.fusion}-pretrained/")
 
 
 if __name__ == "__main__":

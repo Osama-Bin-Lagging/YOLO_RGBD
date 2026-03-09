@@ -5,8 +5,8 @@ from ultralytics import YOLO
 if __name__ == '__main__':
 
     ## 8bit Multispectral
-    # model = YOLO(r"runs/coco8-multispectral/coco8-multispectral-yolo11-RGBT-earlyfusion-10c-16/weights/best.pt") # select your model.pt path
-    # model.predict(source=r'G:\wan\code\GitPro\YOLOv11-RGBT\YOLOv11-RGBT\datasets\coco8-multispectral\images\train',
+    # model = YOLO(r"runs/coco8-multispectral/coco8-multispectral-yolo11-RGBD-earlyfusion-10c-16/weights/best.pt") # select your model.pt path
+    # model.predict(source=r'G:\wan\code\GitPro\YOLOv11-RGBD\YOLOv11-RGBD\datasets\coco8-multispectral\images\train',
     #               imgsz=640,
     #               project='runs/detect',
     #               name='exp',
@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     # Multispectral_16bit
     model = YOLO(
-        r"runs/multispectral-16bit-7ch-2c/multispectral-16bit-7ch-2c-yolo11-RGBT-earlyfusion-7c-2/weights/best.pt")  # select your model.pt path
+        r"runs/multispectral-16bit-7ch-2c/multispectral-16bit-7ch-2c-yolo11-RGBD-earlyfusion-7c-2/weights/best.pt")  # select your model.pt path
     model.predict(source=r'G:\wan\data\multispectral-16bit-7ch-2c\images\val',
                   imgsz=640,
                   project='runs/detect',

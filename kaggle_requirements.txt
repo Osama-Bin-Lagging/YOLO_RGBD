@@ -1,4 +1,4 @@
-# YOLOv11-RGBT requirements for Kaggle
+# YOLOv11-RGBD requirements for Kaggle
 # torch and torchvision are pre-installed on Kaggle
 matplotlib>=3.2.2
 opencv-python>=4.6.0

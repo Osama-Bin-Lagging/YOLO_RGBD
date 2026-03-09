@@ -8,7 +8,7 @@ if __name__ == '__main__':
               split='val',
               imgsz=640,
               batch=16,
-              # use_simotm="RGBT",  # 4通道 RGB + IR
+              # use_simotm="RGBD",  # 4通道 RGB + IR
               # channels=4,
 
               use_simotm="RGBRGB6C", # 6 通道 RGB + IR(3通道)

@@ -280,7 +280,7 @@ class yolo_heatmap:
         for p in model.parameters():
             p.requires_grad_(True)
         model.eval()
-        self.use_simotm = 'RGBT'
+        self.use_simotm = 'RGBD'
         self.channels = 4
         model.task = task
         if not hasattr(model, 'end2end'):
@@ -344,7 +344,7 @@ class yolo_heatmap:
                 im = cv2.imread(f, cv2.IMREAD_UNCHANGED)  # GRAY
                 im = im.astype(np.float32)
 
-            elif self.use_simotm == 'RGBT':
+            elif self.use_simotm == 'RGBD':
                 im_visible = cv2.imread(f)  # BGR
                 im_infrared = cv2.imread(f.replace('visible', 'infrared'), cv2.IMREAD_GRAYSCALE)  # BGR
                 if im_visible is None or im_infrared is None:
@@ -522,9 +522,9 @@ def resize_results(results, orig_shape, target_shape):
 
 def get_params():
     params = {
-        # 'weight': 'LLVIP-yolo11n-RGBT-midfusion-MCF.pt',
+        # 'weight': 'LLVIP-yolo11n-RGBD-midfusion-MCF.pt',
         'weight': 'best.pt',
-        # 现在只需要指定权重即可,不需要指定cfg M3FD-yolo11n-RGBT-midfusion-MCF.pt  best.pt
+        # 现在只需要指定权重即可,不需要指定cfg M3FD-yolo11n-RGBD-midfusion-MCF.pt  best.pt
         'device': 'cuda:0',
         'method': 'GradCAMPlusPlus',
         # GradCAMPlusPlus, GradCAM, XGradCAM, EigenCAM, HiResCAM, LayerCAM, RandomCAM, EigenGradCAM, KPCA_CAM
@@ -538,9 +538,9 @@ def get_params():
         'task': 'detect',  # 任务(detect,segment,pose,obb,classify)
         'img_size': 640,  # 图像尺寸
         # 'channels': 6,
-        # 'use_simotm': 'RGBRGB6C',  # RGBRGB6C    RGB  RGBT
+        # 'use_simotm': 'RGBRGB6C',  # RGBRGB6C    RGB  RGBD
         'channels': 4,
-        'use_simotm': 'RGBT',  # RGBRGB6C    RGB  RGBT
+        'use_simotm': 'RGBD',  # RGBRGB6C    RGB  RGBD
 
     }
     return params
@@ -549,5 +549,5 @@ def get_params():
 # pip install grad-cam==1.5.4 --no-deps
 if __name__ == '__main__':
     model = yolo_heatmap(**get_params())
-    model(r"G:\wan\data\RGBT\test\visible", 'result3')
+    model(r"G:\wan\data\RGBD\test\visible", 'result3')
     # model(r'/home/hjj/Desktop/dataset/dataset_coco/coco/images/val2017', 'result')

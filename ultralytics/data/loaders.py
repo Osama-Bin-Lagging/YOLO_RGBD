@@ -398,18 +398,18 @@ class LoadImagesAndVideos:
 
                 for _ in range(self.vid_stride):
                     success = self.cap.grab()
-                    if  self.use_simotm in ("RGBT","RGBRGB6C") :
+                    if  self.use_simotm in ("RGBD","RGBRGB6C") :
                         success =   success  and self.ir_cap.grab()
                     if not success:
                         break  # end of video or failure
 
                 if success:
                     success, im0 = self.cap.retrieve()
-                    if  self.use_simotm in ("RGBT","RGBRGB6C") :
+                    if  self.use_simotm in ("RGBD","RGBRGB6C") :
                         success_ir,im0_ir=self.ir_cap.retrieve()
                         success=success and success_ir
                         if success:
-                            if self.use_simotm == 'RGBT':
+                            if self.use_simotm == 'RGBD':
                                 im_visible = im0  # BGR
                                 im_infrared = im0_ir  # BGR
 
@@ -527,7 +527,7 @@ class LoadImagesAndVideos:
                     self.count += 1
                     if self.cap:
                         self.cap.release()
-                    if  self.use_simotm in ("RGBT","RGBRGB6C") and self.ir_cap:
+                    if  self.use_simotm in ("RGBD","RGBRGB6C") and self.ir_cap:
                         self.ir_cap.release()
                     if self.count < self.nf:
                         self._new_video(self.files[self.count])
@@ -551,7 +551,7 @@ class LoadImagesAndVideos:
                     im0 = imread(path, cv2.IMREAD_UNCHANGED)  # TIF 16bit
                     im0 = im0.astype(np.float32)
                     im0 = SimOTMSSS(im0)
-                elif self.use_simotm == 'RGBT':
+                elif self.use_simotm == 'RGBD':
                     im_visible = imread(path)  # BGR
                     im_infrared = imread(path.replace(pairs_rgb,pairs_ir), cv2.IMREAD_GRAYSCALE)  # BGR
 
@@ -711,7 +711,7 @@ class LoadImagesAndVideos:
 
         # Initialize IR video capture if IR path is provided
         self.ir_cap = None
-        if self.use_simotm in ("RGBT","RGBRGB6C"):
+        if self.use_simotm in ("RGBD","RGBRGB6C"):
             if ir_path:
                 self.ir_cap = cv2.VideoCapture(ir_path)
                 if not self.ir_cap.isOpened():

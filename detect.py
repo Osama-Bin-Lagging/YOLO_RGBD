@@ -13,7 +13,7 @@ if __name__ == '__main__':
             "use_simotm" set to "RGB". channels=3,
     '''
     model = YOLO(r"runs/M3FD/M3FD_IF-yolo11n2/weights/best.pt") # select your model.pt path
-    model.predict(source=r'G:\wan\data\RGBT\M3FD_Detection\images_coco\infrared\trainval',
+    model.predict(source=r'G:\wan\data\RGBD\M3FD_Detection\images_coco\infrared\trainval',
                   imgsz=640,
                   project='runs/detect',
                   name='exp',

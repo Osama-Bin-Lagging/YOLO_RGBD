@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Convert water_bottle RGBD dataset to YOLOv11-RGBT format.
+"""Convert water_bottle RGBD dataset to YOLOv11-RGBD format.
 
 Handles all water_bottle instances (water_bottle_1 through water_bottle_10).
 Scans rgbd-dataset/water_bottle/ for all instance directories.

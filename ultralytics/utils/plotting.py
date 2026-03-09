@@ -914,7 +914,7 @@ class Annotator:
     """
 
     def __init__(self, im, line_width=None, font_size=None, font="Arial.ttf", pil=False, example="abc",
-                 use_simotm="RGBT"):
+                 use_simotm="RGBD"):
         """Initialize the Annotator class with image and line width along with color palette for keypoints and limbs."""
         non_ascii = not is_ascii(example)  # non-latin labels, i.e. asian, arabic, cyrillic
         input_is_pil = isinstance(im, Image.Image)
@@ -2198,7 +2198,7 @@ def plot_images(
     max_subplots: int = 16,
     save: bool = True,
     conf_thres: float = 0.25,
-    use_simotm="RGBT",
+    use_simotm="RGBD",
     ir_show=False, # 2025-03-03  yzc
 ) -> Optional[np.ndarray]:
     """

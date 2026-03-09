@@ -7,7 +7,7 @@ from ultralytics import YOLO
 # 导出参数官方详解链接：https://docs.ultralytics.com/modes/export/#usage-examples
 
 if __name__ == '__main__':
-    model = YOLO('runs/M3FD/M3FD-yolo11n-RGBT-midfusion-RGBRGB6C-e300-16-/weights/best.pt')
+    model = YOLO('runs/M3FD/M3FD-yolo11n-RGBD-midfusion-RGBRGB6C-e300-16-/weights/best.pt')
     model.export(format='onnx', simplify=True, opset=13,channels=6)
 
     #  tensorrt   若无特殊考虑，务必把动态尺寸设置为False  # https://docs.ultralytics.com/zh/integrations/tensorrt/#usage

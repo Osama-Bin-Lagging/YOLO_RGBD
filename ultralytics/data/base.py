@@ -121,7 +121,7 @@ class BaseDataset(Dataset):
         for f in self.im_files:
             file_path = Path(f)
             pre_fix_mode= ""
-            if self.use_simotm in {"RGBT","RGBRGB6C"}:
+            if self.use_simotm in {"RGBD","RGBRGB6C"}:
                 pre_fix_mode="_"+self.use_simotm
             file_stem = file_path.stem  # 提取文件名主体，比如 "image1"
             new_file_name = file_stem + pre_fix_mode +".npy"
@@ -199,7 +199,7 @@ class BaseDataset(Dataset):
             im = imread(file_path, cv2.IMREAD_UNCHANGED)  # TIF 16bit
             im = im.astype(np.float32)
             im = SimOTMSSS(im)
-        elif use_simotm == 'RGBT':
+        elif use_simotm == 'RGBD':
             im_visible = imread(file_path)  # BGR
             im_infrared = imread(file_path.replace(pairs_rgb, pairs_ir), cv2.IMREAD_GRAYSCALE)  # GRAY
 
@@ -331,7 +331,7 @@ class BaseDataset(Dataset):
                 continue
 
             ratio_m =1.0
-            if self.use_simotm in { 'RGBT', 'RGBRGB6C'}:
+            if self.use_simotm in { 'RGBD', 'RGBRGB6C'}:
                 ratio_m=2.0
 
             b += im.nbytes * ratio_m
@@ -362,7 +362,7 @@ class BaseDataset(Dataset):
             ratio = self.imgsz / max(im.shape[0], im.shape[1])  # max(h, w)  # ratio
 
             ratio_m =1.0
-            if self.use_simotm in { 'RGBT', 'RGBRGB6C'}:
+            if self.use_simotm in { 'RGBD', 'RGBRGB6C'}:
                 ratio_m=2.0
             b += im.nbytes * ratio**2 *ratio_m
 

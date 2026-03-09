@@ -1,4 +1,4 @@
-path: /content/drive/MyDrive/YOLOv11-RGBT/water_bottle_yolo
+path: /content/drive/MyDrive/YOLOv11-RGBD/water_bottle_yolo
 train: visible/train
 val: visible/test
 

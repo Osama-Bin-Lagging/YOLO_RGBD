@@ -465,7 +465,7 @@ class Results(SimpleClass):
         save=False,
         filename=None,
         color_mode="class",
-        use_simotm="RGBT",
+        use_simotm="RGBD",
     ):
         """
         Plots detection results on an input RGB image.

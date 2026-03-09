@@ -198,7 +198,7 @@ class PoseValidator(DetectionValidator):
         )
 
         # 'yzc' 2025-03-03
-        if self.args.use_simotm in ("RGBT", "RGBRGB6C"):
+        if self.args.use_simotm in ("RGBD", "RGBRGB6C"):
             plot_images(
                 batch["img"],
                 batch["batch_idx"],

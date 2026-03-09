@@ -152,7 +152,7 @@ class ClassificationTrainer(BaseTrainer):
             on_plot=self.on_plot,
         )
         # 'yzc' 2025-03-03
-        if self.args.use_simotm in ("RGBT", "RGBRGB6C"):
+        if self.args.use_simotm in ("RGBD", "RGBRGB6C"):
             plot_images(
                 images=batch["img"],
                 batch_idx=torch.arange(len(batch["img"])),

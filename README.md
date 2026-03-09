@@ -1,4 +1,4 @@
-# YOLOv11-RGBT Water Bottle Detection — Kaggle Setup
+# YOLOv11-RGBD Water Bottle Detection — Kaggle Setup
 
 ## Dataset
 
@@ -18,7 +18,7 @@ pip install -r kaggle_requirements.txt
 
 ### 3. Update dataset path
 
-Edit `ultralytics/cfg/datasets/water_bottle-rgbt.yaml`:
+Edit `ultralytics/cfg/datasets/water_bottle-rgbd.yaml`:
 ```yaml
 path: /kaggle/working/water_bottle_yolo   # update to your Kaggle path
 ```
@@ -27,20 +27,20 @@ Same for `water_bottle-rgb.yaml` if running the RGB baseline.
 
 ## Training
 
-### RGBT with pretrained weights (recommended)
+### RGBD with pretrained weights (recommended)
 
 ```bash
 # Earlyfusion (single backbone, 4ch input)
-python train_water_bottle_rgbt.py --fusion earlyfusion --device 0 --epochs 100
+python train_water_bottle_rgbd.py --fusion earlyfusion --device 0 --epochs 100
 
 # Midfusion (dual backbone, concat at P3/P4/P5)
-python train_water_bottle_rgbt.py --fusion midfusion --device 0 --epochs 100
+python train_water_bottle_rgbd.py --fusion midfusion --device 0 --epochs 100
 
 # Midfusion-P3 (dual backbone, concat at P3 only)
-python train_water_bottle_rgbt.py --fusion midfusion-P3 --device 0 --epochs 100
+python train_water_bottle_rgbd.py --fusion midfusion-P3 --device 0 --epochs 100
 ```
 
-### RGBT from scratch
+### RGBD from scratch
 
 ```bash
 python train_water_bottle.py
@@ -55,7 +55,7 @@ python train_water_bottle_rgb.py
 ## Existing runs
 
 Previous training results are in `runs/water_bottle/`:
-- `wb-yolo11n-RGBT-earlyfusion` — RGBT earlyfusion from scratch
+- `wb-yolo11n-RGBD-earlyfusion` — RGBD earlyfusion from scratch
 - `wb-yolo11n-RGB-baseline` / `baseline2` — RGB baselines
 - `wb-yolo11n-RGB-scratch` — RGB from scratch
 
@@ -64,11 +64,11 @@ Each run contains `weights/best.pt`, `results.csv`, `results.png`, confusion mat
 ## Inference & tools
 
 ```bash
-python detect-4C.py          # 4-channel RGBT detection
+python detect-4C.py          # 4-channel RGBD detection
 python detect-multispectral.py  # multispectral detection
 python export.py              # export model
 python val.py                 # validation
-python heatmap_RGBT.py        # gradient heatmap visualization
+python heatmap_RGBD.py        # gradient heatmap visualization
 ```
 
 ## Notes
